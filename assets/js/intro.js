@@ -91,15 +91,15 @@
 
     play(track, [{ transform: `translateX(${trackShift * u}px)` }, { transform: `translateX(${trackShift * u}px)` }], { duration: 1 });
     play(leaf, [{ transform: `translateX(${travel * u}px)` }, { transform: `translateX(${travel * u}px)` }], { duration: 1 });
-    await play(logo, [
+    play(logo, [
       { opacity: 0, transform: "translateY(16px)", filter: "blur(6px)" },
       { opacity: 1, transform: "none", filter: "blur(0)" },
-    ], { duration: 900, easing: "cubic-bezier(.2,.7,.2,1)" }).finished;
-    await wait(250);
+    ], { duration: 450, easing: "cubic-bezier(.2,.7,.2,1)" });
+    await wait(320); // the leaf sets off while the pop is still settling
 
     // 2 + 3. Leaf glides right-to-left through the words and settles.
     const EASE = [0.62, 0, 0.3, 1];
-    const travelMs = 1700;
+    const travelMs = 850;
     const dy = (TEXT.y + TEXT.h / 2 - (LEAF.y + LEAF.h / 2)) * u; // centre leaf on the text line
     play(track, [{ transform: `translateX(${trackShift * u}px)` }, { transform: "translateX(0)" }],
       { duration: travelMs, easing: `cubic-bezier(${EASE})` });
@@ -121,10 +121,10 @@
         { transform: "translateY(0)", opacity: 1 },
         { transform: "translateY(-30%)", opacity: 0.3, offset: 0.42 },
         { transform: "translateY(0)", opacity: 1 },
-      ], { duration: 620, delay: Math.max(0, t - 240), easing: "cubic-bezier(.45,0,.25,1)", fill: "none" });
+      ], { duration: 380, delay: Math.max(0, t - 140), easing: "cubic-bezier(.45,0,.25,1)", fill: "none" });
     });
     await leafRun.finished;
-    await wait(450);
+    await wait(60);
 
     await land();
   }
@@ -137,24 +137,24 @@
     intro.querySelector(".intro__skip").remove();
     const from = logo.getBoundingClientRect();
     const to = target ? target.getBoundingClientRect() : null;
-    const dur = 1150;
+    const dur = 650;
 
     if (to && to.width) {
       const s = to.width / from.width;
       const dx = to.left - from.left, dy = to.top - from.top;
       play(logo, [
         { transform: "none" },
-        { transform: "translateY(-6px) scale(1.015)", offset: 0.14 },
+        { transform: "translateY(-4px) scale(1.01)", offset: 0.12 },
         { transform: `translate(${dx}px, ${dy}px) scale(${s})` },
       ], { duration: dur, easing: "cubic-bezier(.7,0,.2,1)" });
     } else {
       play(logo, [{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.5 });
     }
-    play(bg, [{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.8, delay: dur * 0.3, easing: "cubic-bezier(.4,0,.2,1)" });
+    play(bg, [{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.75, delay: dur * 0.2, easing: "cubic-bezier(.4,0,.2,1)" });
     const reveal = main && play(main, [
-      { transform: "translateY(28px) scale(1.01)", opacity: 0.6 },
+      { transform: "translateY(20px) scale(1.01)", opacity: 0.6 },
       { transform: "none", opacity: 1 },
-    ], { duration: dur, delay: dur * 0.25, easing: "cubic-bezier(.2,.7,.2,1)" });
+    ], { duration: dur, delay: dur * 0.2, easing: "cubic-bezier(.2,.7,.2,1)" });
     await wait(dur);
     finish();
     if (reveal) reveal.finished.then(() => reveal.cancel()).catch(() => {});
@@ -171,7 +171,7 @@
     await Promise.all([...intro.querySelectorAll("img")].map((i) => i.decode().catch(() => {})));
     if (reduced) {
       logo.style.opacity = 1;
-      await wait(500);
+      await wait(200);
       return land();
     }
     return sequence();

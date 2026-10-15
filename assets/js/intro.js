@@ -88,28 +88,27 @@
       play(img, [
         { transform: "translateY(105%)" },
         { transform: "translateY(0)" },
-      ], { duration: 1000, delay: i * 55, easing: "cubic-bezier(.2,.75,.15,1)" });
+      ], { duration: 560, delay: i * 22, easing: "cubic-bezier(.2,.75,.15,1)" });
     });
 
     // 2. The leaf falls from just above the screen, swinging side to side.
-    const fallMs = 3000;
-    const dropStart = 450;
+    const fallMs = 1100;
+    const dropStart = 80;
     const startY = -(top + LEAF.y * u + LEAF.h * u + 40);
     const sway = (k) => k * u;
     play(leaf, [
-      { transform: `translate(${sway(-60)}px, ${startY}px) rotate(-38deg)`, opacity: 0, easing: "ease-in-out" },
-      { transform: `translate(${sway(90)}px, ${startY * 0.72}px) rotate(26deg)`, opacity: 1, offset: 0.24, easing: "ease-in-out" },
-      { transform: `translate(${sway(-70)}px, ${startY * 0.44}px) rotate(-20deg)`, offset: 0.5, easing: "ease-in-out" },
-      { transform: `translate(${sway(40)}px, ${startY * 0.18}px) rotate(12deg)`, offset: 0.74, easing: "ease-in-out" },
-      { transform: `translate(${sway(-10)}px, ${sway(-4)}px) rotate(-4deg)`, offset: 0.92, easing: "ease-out" },
+      { transform: `translate(${sway(-50)}px, ${startY}px) rotate(-32deg)`, opacity: 0, easing: "ease-in-out" },
+      { transform: `translate(${sway(70)}px, ${startY * 0.6}px) rotate(20deg)`, opacity: 1, offset: 0.36, easing: "ease-in-out" },
+      { transform: `translate(${sway(-30)}px, ${startY * 0.22}px) rotate(-10deg)`, offset: 0.7, easing: "ease-in-out" },
+      { transform: `translate(${sway(6)}px, ${sway(-3)}px) rotate(3deg)`, offset: 0.9, easing: "ease-out" },
       { transform: "translate(0, 0) rotate(0deg)", opacity: 1 },
     ], { duration: fallMs, delay: dropStart });
 
     // The words ease left to make room as the leaf comes in to land.
     const settle = play(track, [{ transform: `translateX(${shift}px)` }, { transform: "translateX(0)" }],
-      { duration: 1300, delay: dropStart + fallMs - 1300, easing: "cubic-bezier(.45,0,.2,1)" });
+      { duration: 650, delay: dropStart + fallMs - 650, easing: "cubic-bezier(.45,0,.2,1)" });
     await settle.finished;
-    await wait(500);
+    await wait(60);
 
     await land();
   }
@@ -122,24 +121,24 @@
     intro.querySelector(".intro__skip").remove();
     const from = logo.getBoundingClientRect();
     const to = target ? target.getBoundingClientRect() : null;
-    const dur = 1150;
+    const dur = 650;
 
     if (to && to.width) {
       const s = to.width / from.width;
       const dx = to.left - from.left, dy = to.top - from.top;
       play(logo, [
         { transform: "none" },
-        { transform: "translateY(-6px) scale(1.015)", offset: 0.14 },
+        { transform: "translateY(-4px) scale(1.01)", offset: 0.12 },
         { transform: `translate(${dx}px, ${dy}px) scale(${s})` },
       ], { duration: dur, easing: "cubic-bezier(.7,0,.2,1)" });
     } else {
       play(logo, [{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.5 });
     }
-    play(bg, [{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.8, delay: dur * 0.3, easing: "cubic-bezier(.4,0,.2,1)" });
+    play(bg, [{ opacity: 1 }, { opacity: 0 }], { duration: dur * 0.75, delay: dur * 0.2, easing: "cubic-bezier(.4,0,.2,1)" });
     const reveal = main && play(main, [
-      { transform: "translateY(28px) scale(1.01)", opacity: 0.6 },
+      { transform: "translateY(20px) scale(1.01)", opacity: 0.6 },
       { transform: "none", opacity: 1 },
-    ], { duration: dur, delay: dur * 0.25, easing: "cubic-bezier(.2,.7,.2,1)" });
+    ], { duration: dur, delay: dur * 0.2, easing: "cubic-bezier(.2,.7,.2,1)" });
     await wait(dur);
     finish();
     if (reveal) reveal.finished.then(() => reveal.cancel()).catch(() => {});
@@ -156,7 +155,7 @@
     await Promise.all([...intro.querySelectorAll("img")].map((i) => i.decode().catch(() => {})));
     if (reduced) {
       logo.style.opacity = 1;
-      await wait(500);
+      await wait(200);
       return land();
     }
     return sequence();

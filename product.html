@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Product | Holistically Hip</title>
+  <meta name="claude:viewport-fit-sides" content="cover">
+  <meta name="description" content="Product details from Holistically Hip.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Jost:wght@400;500&display=swap">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-page="product">
+<main id="main">
+
+  <div class="wrap" data-product>
+    <nav class="crumbs" style="justify-content:flex-start;padding-top:24px" aria-label="Breadcrumb" data-p-crumb></nav>
+    <div class="pdp">
+      <div class="pdp__gallery" data-p-gallery></div>
+      <div class="pdp__info">
+        <div style="display:grid;gap:10px">
+          <p class="eyebrow muted" data-p-brand></p>
+          <h1 class="heading" data-p-name></h1>
+          <p class="pdp__price" style="margin:0" data-p-price></p>
+          <p class="muted" style="margin:0;font-size:var(--fs-sm)" data-p-variant></p>
+        </div>
+        <div class="buy-row">
+          <div class="qty">
+            <button type="button" aria-label="Decrease quantity" data-step="-1">−</button>
+            <label class="visually-hidden" for="qty">Quantity</label>
+            <input id="qty" type="number" value="1" min="1" inputmode="numeric">
+            <button type="button" aria-label="Increase quantity" data-step="1">+</button>
+          </div>
+          <button class="btn" type="button" data-p-add data-add="">Add to bag</button>
+        </div>
+        <ul class="perks">
+          <li>Free local delivery in Kingston, every day</li>
+          <li>Ships across Canada</li>
+          <li>Pick up in store at 233 Princess Street</li>
+        </ul>
+        <div class="accordion">
+          <details open><summary>Details</summary><div>Product description from Shopify goes here.</div></details>
+          <details><summary>Ingredients</summary><div>Full ingredient list from Shopify goes here.</div></details>
+          <details><summary>How to use</summary><div>Directions from Shopify go here.</div></details>
+          <details><summary>Shipping & returns</summary><div>Local delivery and shipping details. See <a class="link" href="visit.html#delivery">shipping & delivery</a>.</div></details>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head"><div><p class="eyebrow muted">You may also like</p><h2 class="heading">Pairs well with</h2></div></div>
+      <div class="product-grid" data-related></div>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

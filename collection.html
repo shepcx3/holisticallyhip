@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Collection | Holistically Hip</title>
+  <meta name="claude:viewport-fit-sides" content="cover">
+  <meta name="description" content="Browse a Holistically Hip collection.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Jost:wght@400;500&display=swap">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-page="collection">
+<main id="main">
+
+  <div data-collection>
+    <header class="wrap page-head">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="shop.html">Shop</a><span>/</span><span data-c-crumb></span></nav>
+      <h1 class="display" data-c-title>Collection</h1>
+      <p class="lede muted" data-c-blurb></p>
+    </header>
+    <nav class="wrap" aria-label="Collections"><ul class="subnav" data-c-nav></ul></nav>
+    <div class="toolbar">
+      <div class="wrap">
+        <span class="toolbar__count" data-c-count></span>
+        <label class="visually-hidden" for="sort">Sort products</label>
+        <select id="sort">
+          <option>Featured</option>
+          <option>Best selling</option>
+          <option>Price, low to high</option>
+          <option>Price, high to low</option>
+          <option>Newest</option>
+        </select>
+      </div>
+    </div>
+    <section class="wrap" style="padding-bottom:var(--section)">
+      <ul class="subnav" style="justify-content:flex-start" data-c-subs aria-label="Filter by type"></ul>
+      <div class="product-grid" data-c-grid></div>
+      <div class="notice">
+        <strong class="title-sm" style="color:var(--ink)">Prototype note</strong>
+        <span>These are sample products to show the layout. The full catalogue of 1,004 products, with prices, stock and filters, loads from Shopify on the live site.</span>
+      </div>
+    </section>
+  </div>
+
+</main>
+</body>
+</html>

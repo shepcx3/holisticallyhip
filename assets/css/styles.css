@@ -573,3 +573,36 @@ input { font: inherit; color: inherit; }
 }
 .hero--plain { background: var(--surface); }
 .hero--plain::after { display: none; }
+
+/* ---------- Intro (home page only) ----------
+   The overlay is in the HTML so it covers the page from the first paint.
+   intro.js builds the logo from pieces, plays the sequence, then lands the
+   logo on the header wordmark and fades the overlay away. */
+.intro { display: none; }
+.intro-on .intro {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center;
+  cursor: pointer;
+}
+.intro__bg { position: absolute; inset: 0; background: var(--bg); }
+.intro__logo {
+  position: relative;
+  width: min(84vw, 860px);
+  aspect-ratio: 1071 / 113;
+  opacity: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.intro__track { position: absolute; inset: 0; will-change: transform; }
+.intro__piece { position: absolute; display: block; will-change: transform, opacity; }
+.intro__letter { overflow: hidden; }
+.intro__letter img { position: absolute; max-width: none; }
+.intro__leaf { z-index: 2; }
+.intro__skip {
+  position: absolute; left: 50%; bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 500;
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--muted);
+}
+.intro-on body { overflow: hidden; }
+.intro-on .site-header__logo img { opacity: 0; }

@@ -11,8 +11,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Jost:wght@400;500&display=swap">
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="assets/js/site.js" defer></script>
+  <script src="assets/js/intro.js" defer></script>
+  <script>if (window.Element && Element.prototype.animate) document.documentElement.classList.add("intro-on");</script>
 </head>
 <body data-page="home">
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro__bg"></div>
+  <div class="intro__logo" data-intro-logo></div>
+</div>
 <main id="main">
 
   <section class="hero" aria-label="Featured">

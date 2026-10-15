@@ -1,9 +1,8 @@
-/* Home page intro: "leaf slides through".
-   1. The wordmark pops up with the leaf sitting to the right of the words.
-   2. The leaf glides back through the middle of HOLISTICALLY HIP; each letter
-      lifts and softens as the leaf passes, and the line re-centres as it goes.
-   3. The leaf settles into its place on the left.
-   4. The whole logo falls back into the header while the page fades in. */
+/* Home page intro: "leaf floats down".
+   1. HOLISTICALLY HIP rises into view letter by letter.
+   2. The leaf drifts down from above the screen, swaying like a falling leaf,
+      and comes to rest in its place on the left. The line eases over to make room.
+   3. The whole logo falls back into the header while the page fades in. */
 (() => {
   const root = document.documentElement;
   const intro = document.getElementById("intro");
@@ -72,64 +71,50 @@
   intro.addEventListener("click", onSkip);
   window.addEventListener("keydown", onSkip, { once: true });
 
-  // Solve a CSS cubic-bezier for the time at which its output reaches `y`.
-  function bezierTimeFor(y, [x1, y1, x2, y2]) {
-    const b = (t, a1, a2) => 3 * a1 * t * (1 - t) ** 2 + 3 * a2 * t ** 2 * (1 - t) + t ** 3;
-    for (let t = 0; t <= 1; t += 0.002) if (b(t, y1, y2) >= y) return b(t, x1, x2);
-    return 1;
-  }
-
   async function sequence() {
-    const unit = () => logo.getBoundingClientRect().width / W;
+    const u = logo.getBoundingClientRect().width / W;
+    const top = logo.getBoundingClientRect().top;
 
-    // 1. Pop up, leaf on the right, line centred on what is visible.
-    const travel = LETTERS.at(-1)[0] + LETTERS.at(-1)[1] + GAP - LEAF.x; // leaf start offset
-    const startCenter = (LETTERS[0][0] + LEAF.x + travel + LEAF.w) / 2;
-    const endCenter = (LEAF.x + LETTERS.at(-1)[0] + LETTERS.at(-1)[1]) / 2;
-    const trackShift = endCenter - startCenter;
-    const u = unit();
+    // Centre the words alone; the line shifts over once the leaf arrives.
+    const textCenter = (LETTERS[0][0] + LETTERS.at(-1)[0] + LETTERS.at(-1)[1]) / 2;
+    const fullCenter = (LEAF.x + LETTERS.at(-1)[0] + LETTERS.at(-1)[1]) / 2;
+    const shift = (fullCenter - textCenter) * u;
+    play(track, [{ transform: `translateX(${shift}px)` }, { transform: `translateX(${shift}px)` }], { duration: 1 });
+    play(leaf, [{ opacity: 0 }, { opacity: 0 }], { duration: 1 });
+    logo.style.opacity = 1;
 
-    play(track, [{ transform: `translateX(${trackShift * u}px)` }, { transform: `translateX(${trackShift * u}px)` }], { duration: 1 });
-    play(leaf, [{ transform: `translateX(${travel * u}px)` }, { transform: `translateX(${travel * u}px)` }], { duration: 1 });
-    await play(logo, [
-      { opacity: 0, transform: "translateY(16px)", filter: "blur(6px)" },
-      { opacity: 1, transform: "none", filter: "blur(0)" },
-    ], { duration: 900, easing: "cubic-bezier(.2,.7,.2,1)" }).finished;
-    await wait(250);
-
-    // 2 + 3. Leaf glides right-to-left through the words and settles.
-    const EASE = [0.62, 0, 0.3, 1];
-    const travelMs = 1700;
-    const dy = (TEXT.y + TEXT.h / 2 - (LEAF.y + LEAF.h / 2)) * u; // centre leaf on the text line
-    play(track, [{ transform: `translateX(${trackShift * u}px)` }, { transform: "translateX(0)" }],
-      { duration: travelMs, easing: `cubic-bezier(${EASE})` });
-    const leafRun = play(leaf, [
-      { transform: `translate(${travel * u}px, 0) scale(1) rotate(0deg)` },
-      { transform: `translate(${travel * 0.9 * u}px, ${dy}px) scale(.6) rotate(-14deg)`, offset: 0.12 },
-      { transform: `translate(${travel * 0.1 * u}px, ${dy}px) scale(.6) rotate(-14deg)`, offset: 0.86 },
-      { transform: `translate(0, 0) scale(1.06) rotate(5deg)`, offset: 0.95 },
-      { transform: "translate(0, 0) scale(1) rotate(0deg)" },
-    ], { duration: travelMs, easing: `cubic-bezier(${EASE})` });
-
-    // Each letter lifts and softens just as the leaf passes under it.
-    const leafStart = LEAF.x + LEAF.w / 2 + travel;
-    letters.forEach(({ box, center }) => {
-      const progress = (leafStart - center) / travel; // eased progress at which leaf centre meets letter
-      if (progress <= 0 || progress >= 1) return;
-      const t = bezierTimeFor(progress, EASE) * travelMs;
-      play(box, [
-        { transform: "translateY(0)", opacity: 1 },
-        { transform: "translateY(-30%)", opacity: 0.3, offset: 0.42 },
-        { transform: "translateY(0)", opacity: 1 },
-      ], { duration: 620, delay: Math.max(0, t - 240), easing: "cubic-bezier(.45,0,.25,1)", fill: "none" });
+    // 1. Letters rise out of a mask, left to right.
+    letters.forEach(({ img }, i) => {
+      play(img, [
+        { transform: "translateY(105%)" },
+        { transform: "translateY(0)" },
+      ], { duration: 1000, delay: i * 55, easing: "cubic-bezier(.2,.75,.15,1)" });
     });
-    await leafRun.finished;
-    await wait(450);
+
+    // 2. The leaf falls from just above the screen, swinging side to side.
+    const fallMs = 3000;
+    const dropStart = 450;
+    const startY = -(top + LEAF.y * u + LEAF.h * u + 40);
+    const sway = (k) => k * u;
+    play(leaf, [
+      { transform: `translate(${sway(-60)}px, ${startY}px) rotate(-38deg)`, opacity: 0, easing: "ease-in-out" },
+      { transform: `translate(${sway(90)}px, ${startY * 0.72}px) rotate(26deg)`, opacity: 1, offset: 0.24, easing: "ease-in-out" },
+      { transform: `translate(${sway(-70)}px, ${startY * 0.44}px) rotate(-20deg)`, offset: 0.5, easing: "ease-in-out" },
+      { transform: `translate(${sway(40)}px, ${startY * 0.18}px) rotate(12deg)`, offset: 0.74, easing: "ease-in-out" },
+      { transform: `translate(${sway(-10)}px, ${sway(-4)}px) rotate(-4deg)`, offset: 0.92, easing: "ease-out" },
+      { transform: "translate(0, 0) rotate(0deg)", opacity: 1 },
+    ], { duration: fallMs, delay: dropStart });
+
+    // The words ease left to make room as the leaf comes in to land.
+    const settle = play(track, [{ transform: `translateX(${shift}px)` }, { transform: "translateX(0)" }],
+      { duration: 1300, delay: dropStart + fallMs - 1300, easing: "cubic-bezier(.45,0,.2,1)" });
+    await settle.finished;
+    await wait(500);
 
     await land();
   }
 
-  // 4. Shared ending: drop the logo onto the header wordmark and reveal the page.
+  // 3. Shared ending: drop the logo onto the header wordmark and reveal the page.
   async function land() {
     const target = document.querySelector(".site-header__logo img");
     const main = document.getElementById("main");

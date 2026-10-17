@@ -318,6 +318,31 @@ input { font: inherit; color: inherit; }
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(to top, rgb(15 38 31 / .55), rgb(15 38 31 / 0) 45%);
 }
+/* Video hero: a still shows first (and stays for reduced motion / data saver),
+   the video fades in over it once it is actually playing. */
+.hero__stage { position: relative; overflow: hidden; aspect-ratio: 4 / 5; max-width: 100%; }
+@media (min-width: 760px) { .hero__stage { aspect-ratio: auto; height: min(88vh, 940px); min-height: 560px; } }
+.hero__poster img, .hero__video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.hero__video { opacity: 0; transition: opacity .8s ease; }
+.hero__video.is-playing { opacity: 1; }
+.hero--video::after {
+  background: linear-gradient(to top, rgb(15 38 31 / .7), rgb(15 38 31 / .2) 55%, rgb(15 38 31 / .12));
+}
+.hero__toggle {
+  position: absolute; z-index: 2;
+  right: max(var(--gutter-x), env(safe-area-inset-right, 0px));
+  bottom: clamp(20px, 3vw, 36px);
+  width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1px solid rgb(246 244 240 / .55);
+  color: var(--bg);
+  transition: background .2s, border-color .2s;
+}
+.hero__toggle:hover { background: rgb(246 244 240 / .15); border-color: var(--bg); }
+.hero__toggle svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 1.6; fill: none; }
+.hero__toggle [data-icon="play"] { fill: currentColor; stroke: none; }
 .hero__copy {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
   padding-block: clamp(28px, 5vw, 64px);
@@ -606,3 +631,5 @@ input { font: inherit; color: inherit; }
 }
 .intro-on body { overflow: hidden; }
 .intro-on .site-header__logo img { opacity: 0; }
+@media (max-width: 759px) { .hero__toggle { bottom: auto; top: 16px; } }
+.hero__toggle svg[hidden] { display: none; }

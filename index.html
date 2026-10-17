@@ -21,11 +21,20 @@
 </div>
 <main id="main">
 
-  <section class="hero" aria-label="Featured">
-    <div class="hero__media">
-      <img src="assets/img/store-interior.jpg" alt="Inside Holistically Hip: arched shelves of skincare, rattan pendant lights and plants by the front window" width="1179" height="1563" fetchpriority="high" style="object-position:50% 60%">
-      <img src="assets/img/routine-deodorant.jpg" alt="Pastel tubes of Routine natural deodorant on a wooden shelf" width="1179" height="1345" style="object-position:50% 70%">
+  <section class="hero hero--video" aria-label="Featured">
+    <div class="hero__stage">
+      <picture class="hero__poster">
+        <source media="(max-width: 759px)" srcset="assets/video/hero-mobile.jpg">
+        <img src="assets/video/hero-desktop.jpg" alt="" width="1920" height="850" fetchpriority="high">
+      </picture>
+      <video class="hero__video" muted loop playsinline preload="none" aria-hidden="true" data-hero-video
+        data-desktop-webm="assets/video/hero-desktop.webm" data-desktop-mp4="assets/video/hero-desktop.mp4"
+        data-mobile-webm="assets/video/hero-mobile.webm" data-mobile-mp4="assets/video/hero-mobile.mp4"></video>
     </div>
+    <button class="hero__toggle" type="button" aria-label="Pause background video" aria-pressed="false" data-hero-toggle hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true" data-icon="pause"><path d="M9 6v12M15 6v12"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true" data-icon="play" hidden><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
+    </button>
     <div class="hero__copy wrap">
       <p class="eyebrow">233 Princess Street · Kingston</p>
       <h1 class="display">Wellness, made simple</h1>

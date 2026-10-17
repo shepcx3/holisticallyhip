@@ -434,7 +434,50 @@ function bindQuickAdd(root = document) {
 }
 
 /* ---------- page-specific ---------- */
+function initHeroVideo() {
+  const video = $("[data-hero-video]");
+  const toggle = $("[data-hero-toggle]");
+  if (!video) return;
+  // Respect reduced motion and data saver: the still image stays in place.
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce || navigator.connection?.saveData) return;
+
+  const small = window.matchMedia("(max-width: 759px)");
+  let userPaused = false;
+
+  const load = () => {
+    const size = small.matches ? "mobile" : "desktop";
+    if (video.dataset.loaded === size) return;
+    video.dataset.loaded = size;
+    video.classList.remove("is-playing");
+    video.innerHTML = `<source src="${video.dataset[size + "Webm"]}" type="video/webm"><source src="${video.dataset[size + "Mp4"]}" type="video/mp4">`;
+    video.load();
+    if (!userPaused) video.play().catch(() => {});
+  };
+  const setToggle = (paused) => {
+    toggle.setAttribute("aria-pressed", String(paused));
+    toggle.setAttribute("aria-label", paused ? "Play background video" : "Pause background video");
+    $('[data-icon="pause"]', toggle).hidden = paused;
+    $('[data-icon="play"]', toggle).hidden = !paused;
+  };
+
+  video.addEventListener("playing", () => { video.classList.add("is-playing"); toggle.hidden = false; });
+  toggle.addEventListener("click", () => {
+    userPaused = !video.paused;
+    if (userPaused) video.pause(); else video.play().catch(() => {});
+    setToggle(userPaused);
+  });
+  // Stop decoding while the hero is scrolled out of view.
+  new IntersectionObserver(([entry]) => {
+    if (userPaused) return;
+    if (entry.isIntersecting) video.play().catch(() => {}); else video.pause();
+  }).observe(video);
+  small.addEventListener("change", load);
+  load();
+}
+
 function initHome() {
+  initHeroVideo();
   const rail = $("[data-bestsellers]");
   if (rail) rail.innerHTML = PRODUCTS.slice(0, 8).map(productCard).join("");
   const rail2 = $("[data-supplements]");

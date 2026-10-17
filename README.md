@@ -26,7 +26,7 @@ Open `index.html` in a browser. There is no build step and no dependencies. Font
 - `assets/css/styles.css`: design tokens (colour, type, spacing) and all components.
 - `assets/js/site.js`: renders the shared announcement bar, header, mega menu, mobile menu, cart drawer, search panel, newsletter and footer. It also holds the store info (`STORE`), the collections (`COLLECTIONS`) and a few sample products (`PRODUCTS`).
 - `assets/img/`: the client's photos and a transparent logo and wordmark traced from their logo.
-- `assets/video/`: the home page hero video, web-compressed. Desktop is 1920 wide; phones get a 4:5 crop. Each has an MP4 and a smaller WebM, plus a still that shows while the video loads and for visitors with reduced motion or data saver on.
+- `assets/video/`: the home page hero video, web-compressed from the 4K source. Large or high-density screens get a 2560px version, other desktops 1920px, and phones a 1080×1350 (4:5) crop. Each has an MP4 and a smaller WebM, plus a still that shows while the video loads and for visitors with reduced motion or data saver on.
 - `media-source/`: the original uploaded footage and stills, kept for re-editing. The site doesn't use these files.
 
 ## Moving to Shopify

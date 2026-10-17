@@ -446,7 +446,9 @@ function initHeroVideo() {
   let userPaused = false;
 
   const load = () => {
-    const size = small.matches ? "mobile" : "desktop";
+    // Large or high-density screens get the 2560px file; others the 1920px one.
+    const wide = window.innerWidth * (window.devicePixelRatio || 1) > 2200;
+    const size = small.matches ? "mobile" : wide ? "hd" : "desktop";
     if (video.dataset.loaded === size) return;
     video.dataset.loaded = size;
     video.classList.remove("is-playing");
